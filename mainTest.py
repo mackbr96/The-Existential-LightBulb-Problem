@@ -16,10 +16,12 @@ def graph(bulbs, switches):
         sw.append(Switch())
 
     for i in range(0, len(bulbs)):
-        
-
-
-
+        first = bulbs[0][0]
+        second = bulbs[0][1]
+        '''
+            Not second depends on first
+            Not first depends on second
+        '''
 
 def checkAll(swithces, bulbs):
     global bulbNum
@@ -30,7 +32,6 @@ def checkAll(swithces, bulbs):
             return False
 
     return True
-
 
 
 def checkbulb(bulbs, switches):
@@ -99,7 +100,7 @@ for i in range(1, switchNUm+1):
 count = 0
 while(checkbulb(bulbss, switches) != -1):
     count += 1
-    if count > 9:#99999:
+    if count > 99999:
         print("NO SOLUTION")
         graph(bulbss, switches)
         
