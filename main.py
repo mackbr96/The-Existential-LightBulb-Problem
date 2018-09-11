@@ -2,13 +2,9 @@ import random
 
 def checkAll(swithces, bulbs):
     right = 0
-    #print("Bulbs = ")
-    #print(bulbs)
     for i in bulbs:
         first = i[0]
         second = i[1]
-        #print(first)
-        #print(second)
         if first < 0:
             firstNeg = True
             first *= -1
@@ -20,9 +16,6 @@ def checkAll(swithces, bulbs):
             secondNeg = True
         else:
             secondNeg = False
-
-        #print("First is " + str(first) + " and switch is " + str(switches[first - 1]) + " and neg is " + str(firstNeg))
-        #print("Second is " + str(second) + " and switch is " + str(switches[second - 1]) + " and neg is " + str(secondNeg) )
         first -= 1
         second -= 1
 
@@ -30,9 +23,7 @@ def checkAll(swithces, bulbs):
 
             
         if(check(firstNeg, switches[first]) == False and check(secondNeg, switches[second]) == False):
-            #print(right)
             return False
-    print("TRUE")
 
     return True
 
@@ -68,10 +59,8 @@ def checkbulb(bulbs, switches):
         secondNeg = False
     first -= 1
     second -= 1
-    #print(first)
-    #print(second)
-    #print(len(switches))
-    #while(check(firstNeg, switches[first]) or check(secondNeg, switches[second])):
+    if(checkAll(switches, bulbs)):
+            return -1
     while(check(firstNeg, switches[first]) or check(secondNeg, switches[second])):
         i = random.randint(0,bulbNum - 1)
         first = bulbs[i][0]
@@ -88,8 +77,7 @@ def checkbulb(bulbs, switches):
             secondNeg = False
         first -= 1
         second -= 1
-        if(checkAll(switches, bulbs)):
-            return -1
+        
         
     x = i
     i = random.randint(0,1)
@@ -120,7 +108,7 @@ def formatBulb(bulbs):
         array.append(tuple([int(s1),int(s2)]))
     return array
 
-infile = "text1.txt"
+infile = "text2.txt"
 
 with open(infile, "r") as f:
     bulbs = []
@@ -143,9 +131,7 @@ count = 0
 while(checkbulb(bulbss, switches) != -1):
     count += 1
     if count > 99999:
-        print("BIG NO")
+        print("NO SOLUTION")
         exit()
-    print("no")
-#print(bulbss)
 print(switches)
 print("yes")
