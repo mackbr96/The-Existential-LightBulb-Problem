@@ -9,19 +9,23 @@ class Switch:
         self.depend.append(num)
 
 
-
 def graph(bulbs, switches):
     sw = []
     for i in range(0,len(bulbs)):
-        sw.append(Switch())
+        s = Switch()
+        sw.append(s)
 
     for i in range(0, len(bulbs)):
-        first = bulbs[0][0]
-        second = bulbs[0][1]
+        first = bulbs[i][0]
+        second = bulbs[i][1]
+        sw[abs(first) - 1].add(second * -1)
+        sw[abs(second) - 1].add(first * -1)
         '''
             Not second depends on first
             Not first depends on second
         '''
+    for i in range(0,len(sw)):
+        print(sw[i].depend)
 
 def checkAll(swithces, bulbs):
     global bulbNum
@@ -46,6 +50,7 @@ def checkbulb(bulbs, switches):
         i = random.randint(0,bulbNum-1)
         first = bulbs[i][0]
         second = bulbs[i][1]
+    
         
        
         
@@ -77,7 +82,7 @@ def formatBulb(bulbs):
         array.append(tuple([int(s1),int(s2)]))
     return array
 
-infile = "text2.txt"
+infile = "text1.txt"
 
 with open(infile, "r") as f:
     bulbs = []
@@ -100,7 +105,7 @@ for i in range(1, switchNUm+1):
 count = 0
 while(checkbulb(bulbss, switches) != -1):
     count += 1
-    if count > 99999:
+    if count > 999:
         print("NO SOLUTION")
         graph(bulbss, switches)
         
