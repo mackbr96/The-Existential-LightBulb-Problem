@@ -16,7 +16,6 @@ class NotSwitch:
         self.depend.append(num)
 
 
-
 def graph(bulbs, switches):
     sw = []
     nsw = []
@@ -50,6 +49,16 @@ def graph(bulbs, switches):
         print("Switch NOT " + str(i + 1) + " depends on " + str(nsw[i].depend))
 
 
+    if(walk(sw[0]) and walk(nsw)):
+        print("WORKS")
+        exit()
+    else:
+        print("DOESN'T WORK")
+        exit()
+
+    
+
+
 def checkAll(swithces, bulbs):
     global bulbNum
     for i in range (0,bulbNum):
@@ -73,9 +82,6 @@ def checkbulb(bulbs, switches):
         i = random.randint(0,bulbNum-1)
         first = bulbs[i][0]
         second = bulbs[i][1]
-    
-        
-       
         
     x = i
     i = random.randint(0,1)
@@ -83,8 +89,6 @@ def checkbulb(bulbs, switches):
     if(checkAll(switches, bulbs)):
             return -1
     return 0
-
-
 
 
 def formatBulb(bulbs):
@@ -131,7 +135,7 @@ while(checkbulb(bulbss, switches) != -1):
     if count > 999:
         print("NO SOLUTION")
         graph(bulbss, switches)
-        
         exit()
+
 print(switches)
 print("yes")
