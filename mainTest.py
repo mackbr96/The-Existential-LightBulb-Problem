@@ -1,5 +1,9 @@
 import random
+import sys
 start = ""
+
+
+sys.setrecursionlimit(6000)
 
 class Switch:
     def __init__(self):
@@ -16,6 +20,7 @@ class NotSwitch:
         self.depend.append(num)
 
 
+
 def graph(bulbs, switches):
     sw = []
     nsw = []
@@ -30,33 +35,61 @@ def graph(bulbs, switches):
         first = bulbs[i][0]
         second = bulbs[i][1]
 
-        if( first > 0):
-            sw[abs(first) - 1].add(second * -1)
-        else:
-            nsw[abs(first) - 1].add(second * -1)
-
         if( second > 0):
-            sw[abs(second) - 1].add(first * -1)
+            #sw[abs(first) - 1].add(second * -1)
+            nsw[abs(second) - 1].add(first)
         else:
-            nsw[abs(second) - 1].add(first * -1)
+            #nsw[abs(first) - 1].add(second * -1)
+            sw[abs(second) - 1].add(first)
+        if( first > 0):
+            nsw[abs(first) - 1].add(second)
+            #sw[abs(second) - 1].add(first * -1)
+        else:
+            #nsw[abs(second) - 1].add(first * -1)
+            sw[abs(first) - 1].add(second)
         '''
             Not second depends on first
             Not first depends on second
         '''
 
     for i in range(0,len(sw)):
-        print("Switch " + str(i + 1) + " depends on " + str(sw[i].depend))
-        print("Switch NOT " + str(i + 1) + " depends on " + str(nsw[i].depend))
+        print("Switch " + str(i + 1) + " points to " + str(sw[i].depend))
+        print("Switch NOT " + str(i + 1) + " points to " + str(nsw[i].depend))
 
-
-    if(walk(sw[0]) and walk(nsw)):
-        print("WORKS")
-        exit()
+    if(walkGraph(sw, nsw, -1 ,1, []) and walkGraph(sw, nsw, 1, -1, [])):
+        print("FAILS")
     else:
-        print("DOESN'T WORK")
-        exit()
+        print("ALL IS GOOD")
 
-    
+
+def walkGraph(sw, nsw, og, i, done):
+    if( i in done):
+        print(done)
+        if(done == list(range(0, len(sw) - 1))):
+            return False
+    else:
+        done.append(i)
+    done = sorted(done)
+    if(i > 0):
+        if(og in sw[i-1].depend):
+            print("THIS IS BAD.")
+            return True
+            #walkGraph(sw, snw, og * -1, og)
+        else:
+            for x in range(0,len(sw[abs(i)-1].depend)):
+                if(walkGraph(sw, nsw, og, sw[i-1].depend[x], done)): return True
+    else:
+        if(og in nsw[abs(i)-1].depend):
+            print("THIS IS BAD.")
+            return True
+            #walkGraph(sw, snw, og * -1, og)
+        else:
+            for x in range(0,len(nsw[i-1].depend)):
+                if(walkGraph(sw, nsw, og, nsw[abs(i)-1].depend[x], done)): return True
+
+        
+
+
 
 
 def checkAll(swithces, bulbs):
@@ -91,6 +124,7 @@ def checkbulb(bulbs, switches):
     return 0
 
 
+
 def formatBulb(bulbs):
     array = []
     for i in range(0, len(bulbs)):
@@ -109,7 +143,7 @@ def formatBulb(bulbs):
         array.append(tuple([int(s1),int(s2)]))
     return array
 
-infile = "text1.txt"
+infile = "text2.txt"
 
 with open(infile, "r") as f:
     bulbs = []
@@ -130,12 +164,13 @@ for i in range(1, switchNUm+1):
     if( r == 0): switches.append(i)
     else: switches.append(i * -1)
 count = 0
+
 while(checkbulb(bulbss, switches) != -1):
     count += 1
-    if count > 999:
+    if count > 9:
         print("NO SOLUTION")
         graph(bulbss, switches)
+        
         exit()
-
 print(switches)
 print("yes")
