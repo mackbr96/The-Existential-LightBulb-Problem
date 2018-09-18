@@ -36,16 +36,12 @@ def graph(bulbs, switches):
         second = bulbs[i][1]
 
         if( second > 0):
-            #sw[abs(first) - 1].add(second * -1)
             nsw[abs(second) - 1].add(first)
         else:
-            #nsw[abs(first) - 1].add(second * -1)
             sw[abs(second) - 1].add(first)
         if( first > 0):
             nsw[abs(first) - 1].add(second)
-            #sw[abs(second) - 1].add(first * -1)
         else:
-            #nsw[abs(second) - 1].add(first * -1)
             sw[abs(first) - 1].add(second)
         '''
             Not second depends on first
@@ -64,12 +60,11 @@ def graph(bulbs, switches):
 
 def walkGraph(sw, nsw, og, i, done):
     if( i in done):
-        print(done)
-        if(done == list(range(0, len(sw) - 1))):
-            return False
+        print("done")
+        return False
     else:
         done.append(i)
-    done = sorted(done)
+    #done = sorted(done)
     if(i > 0):
         if(og in sw[i-1].depend):
             print("THIS IS BAD.")
@@ -84,12 +79,8 @@ def walkGraph(sw, nsw, og, i, done):
             return True
             #walkGraph(sw, snw, og * -1, og)
         else:
-            for x in range(0,len(nsw[i-1].depend)):
+            for x in range(0,len(nsw[abs(i)-1].depend)):
                 if(walkGraph(sw, nsw, og, nsw[abs(i)-1].depend[x], done)): return True
-
-        
-
-
 
 
 def checkAll(swithces, bulbs):
@@ -143,7 +134,7 @@ def formatBulb(bulbs):
         array.append(tuple([int(s1),int(s2)]))
     return array
 
-infile = "text2.txt"
+infile = "text1.txt"
 
 with open(infile, "r") as f:
     bulbs = []
@@ -167,7 +158,7 @@ count = 0
 
 while(checkbulb(bulbss, switches) != -1):
     count += 1
-    if count > 9:
+    if count > 2:#len(switches) * 10:
         print("NO SOLUTION")
         graph(bulbss, switches)
         
