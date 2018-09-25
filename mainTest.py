@@ -7,17 +7,17 @@ sys.setrecursionlimit(6000)
 
 class Switch:
     def __init__(self):
-        self.depend = []
+        self.pointsTo = []
     
     def add(self, num):
-        self.depend.append(num)
+        self.pointsTo.append(num)
 
 class NotSwitch:
     def __init__(self):
-        self.depend = []
+        self.pointsTo = []
     
     def add(self, num):
-        self.depend.append(num)
+        self.pointsTo.append(num)
 
 
 
@@ -48,39 +48,40 @@ def graph(bulbs, switches):
             Not first depends on second
         '''
 
-    for i in range(0,len(sw)):
-        print("Switch " + str(i + 1) + " points to " + str(sw[i].depend))
-        print("Switch NOT " + str(i + 1) + " points to " + str(nsw[i].depend))
-
-    if(walkGraph(sw, nsw, -1 ,1, []) and walkGraph(sw, nsw, 1, -1, [])):
-        print("FAILS")
-    else:
-        print("ALL IS GOOD")
+    #for i in range(0,len(sw)):
+        #print("Switch " + str(i + 1) + " points to " + str(sw[i].pointsTo))
+        #print("Switch NOT " + str(i + 1) + " points to " + str(nsw[i].pointsTo))
+    for i in range(1,len(switches) + 1):
+        if(walkGraph(sw, nsw, i * -1 ,i, []) and walkGraph(sw, nsw, i, i*-1, [])):
+            print("Switch " + str(i) + " Is a problem")
+        '''else:
+            print("ALL IS GOOD")'''
+    print("***Finished***")
 
 
 def walkGraph(sw, nsw, og, i, done):
     if( i in done):
-        print("done")
+        #print("done")
         return False
     else:
         done.append(i)
     #done = sorted(done)
     if(i > 0):
-        if(og in sw[i-1].depend):
-            print("THIS IS BAD.")
+        if(og in sw[i-1].pointsTo):
+            #print("THIS IS BAD.")
             return True
             #walkGraph(sw, snw, og * -1, og)
         else:
-            for x in range(0,len(sw[abs(i)-1].depend)):
-                if(walkGraph(sw, nsw, og, sw[i-1].depend[x], done)): return True
+            for x in range(0,len(sw[abs(i)-1].pointsTo)):
+                if(walkGraph(sw, nsw, og, sw[i-1].pointsTo[x], done)): return True
     else:
-        if(og in nsw[abs(i)-1].depend):
-            print("THIS IS BAD.")
+        if(og in nsw[abs(i)-1].pointsTo):
+            #print("THIS IS BAD.")
             return True
             #walkGraph(sw, snw, og * -1, og)
         else:
-            for x in range(0,len(nsw[abs(i)-1].depend)):
-                if(walkGraph(sw, nsw, og, nsw[abs(i)-1].depend[x], done)): return True
+            for x in range(0,len(nsw[abs(i)-1].pointsTo)):
+                if(walkGraph(sw, nsw, og, nsw[abs(i)-1].pointsTo[x], done)): return True
 
 
 def checkAll(swithces, bulbs):
@@ -158,10 +159,11 @@ count = 0
 
 while(checkbulb(bulbss, switches) != -1):
     count += 1
-    if count > 2:#len(switches) * 10:
-        print("NO SOLUTION")
+    if count > len(switches) * 10:
+        print("NO RANDOM SOLUTION FOUND")
+        print("TESTING USING GRAPH")
         graph(bulbss, switches)
-        
         exit()
+
 print(switches)
 print("yes")
