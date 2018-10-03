@@ -52,7 +52,6 @@ def graph(bulbs, switches): #Makes the graph
         one, two = walkGraph(sw, nsw, i * -1 ,i, []), walkGraph(sw, nsw, i, i*-1, []) #Check to see if there is a contridiction
         if(one != [] and two != []): #There is a contridiction
             print(one)
-            print("blah")
             print(two)    
             return False #There is no solution
 
@@ -136,7 +135,12 @@ def formatBulb(bulbs):
         array.append(tuple([int(s1),int(s2)]))
     return array
 
-infile = "text2.txt" #File to test
+
+if(len(sys.argv) < 2 or len(sys.argv) > 2):
+    print("Incorrect number of arguments")
+    exit()
+
+infile = sys.argv[1] #File to test
 
 with open(infile, "r") as f:
     bulbs = []
