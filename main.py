@@ -52,6 +52,7 @@ def graph(bulbs, switches): #Makes the graph
         one, two = walkGraph(sw, nsw, i * -1 ,i, []), walkGraph(sw, nsw, i, i*-1, []) #Check to see if there is a contridiction
         if(one != [] and two != []): #There is a contridiction
             print(one)
+            print("blah")
             print(two)    
             return False #There is no solution
 
@@ -70,14 +71,19 @@ def walkGraph(sw, nsw, og, i, done): #Walk the graph check for a loop back to th
             return done
         else:
             for x in range(0,len(sw[abs(i)-1].pointsTo)):
-                if(walkGraph(sw, nsw, og, sw[i-1].pointsTo[x], done)): return done
+                if(walkGraph(sw, nsw, og, sw[i-1].pointsTo[x], done) != []): return done
+                else:
+                    return []
     else:
         if(og in nsw[abs(i)-1].pointsTo): #THIS IS BAD
             done.append(og)
             return done
         else:
             for x in range(0,len(nsw[abs(i)-1].pointsTo)):
-                if(walkGraph(sw, nsw, og, nsw[abs(i)-1].pointsTo[x], done)): return done
+                if(walkGraph(sw, nsw, og, nsw[abs(i)-1].pointsTo[x], done)) != []: return done
+                else:
+                    return []
+    return []
 
 def checkAll(swithces, bulbs): #Checks if all bulbs are on
     global bulbNum
@@ -130,7 +136,7 @@ def formatBulb(bulbs):
         array.append(tuple([int(s1),int(s2)]))
     return array
 
-infile = "text1.txt" #File to test
+infile = "text2.txt" #File to test
 
 with open(infile, "r") as f:
     bulbs = []
@@ -154,7 +160,7 @@ count = 0
 
 while(checkbulb(bulbss, switches) != -1):
     count += 1
-    if count > len(switches) * 10: #Quick check
+    if count > 5: #Quick check
         print("NO RANDOM SOLUTION FOUND")
         print("TESTING USING GRAPH")
         if( graph(bulbss, switches) == True): #A solution is possible Run till we find it
