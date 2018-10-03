@@ -54,6 +54,7 @@ def graph(bulbs, switches):
     for i in range(1,len(switches) + 1):
         if(walkGraph(sw, nsw, i * -1 ,i, []) and walkGraph(sw, nsw, i, i*-1, [])):
             print("Switch " + str(i) + " Is a problem")
+            break
         '''else:
             print("ALL IS GOOD")'''
     print("***Finished***")
